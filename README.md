@@ -1,6 +1,6 @@
-# Deploy-Users
+# User-Setup
 
-Creates all users defined by vars. Removes all undefined users exept the ansible-user.
+Creates all users defined by vars. Removes all undefined users
 
 ## Requirements
 
@@ -12,12 +12,11 @@ Users have to be defined like this:
 
 ```yaml
 users:
-  - username:
-    name: username
+  - name: username
     comment: Some User
     groups: users, admin
     sudo: true
-    ssh_authorized_keys:
+    ssh_keys:
       - ssh-rsa [...]
 ```
 
@@ -28,20 +27,24 @@ Only default modules are used. No dependencies.
 ## Example Playbook
 
 ```yaml
-- hosts: all
+- name: Set users
+  hosts: all
   vars:
     users:
-      - username:
-        name: username
+      - name: jenny
         comment: Some User
         groups: users, admin
         sudo: true
-        ssh_authorized_keys:
+        shell: "/bin/bash"
+        ssh_keys:
           - ssh-rsa [...]
+    docker_users:
+      - jenny
+      - fritz
+      - madeleine
   become: true
-
   roles:
-    - role: deploy_users
+    - role: user_setup
 ```
 
 ## License

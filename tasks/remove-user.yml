@@ -4,6 +4,7 @@
     name: "{{ item }}"
     state: absent
     remove: true
+  diff: true
 
 - name: Remove user from sudo
   ansible.builtin.file:

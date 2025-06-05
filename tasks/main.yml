@@ -8,6 +8,7 @@
     state: present
     backrefs: true
     validate: "visudo -cf %s"
+  diff: true
 
 - name: Passwordless sudo
   ansible.builtin.lineinfile:
@@ -16,6 +17,7 @@
     regexp: "^%sudo"
     line: "%sudo ALL=(ALL:ALL) NOPASSWD: ALL"
     validate: "visudo -cf %s"
+  diff: true
 
 - name: Create necessary groups
   ansible.builtin.group:
@@ -24,6 +26,7 @@
   with_items:
     - "{{ user_groups }}"
     - "{{ additional_user_groups }}"
+  diff: true
 
 - name: Deploy users
   ansible.builtin.include_tasks: create-user.yml
@@ -50,10 +53,6 @@
 - name: Determine users to be removed
   ansible.builtin.set_fact:
     users_to_remove: "{{ existing_users.stdout_lines | difference(new_users) }}"
-
-- name: Ensure that ansible_ssh_user is not removed
-  ansible.builtin.set_fact:
-    users_to_remove: "{{ users_to_remove | difference(ansible_ssh_user) }}"
 
 - name: Remove users
   ansible.builtin.include_tasks: remove-user.yml
