@@ -49,9 +49,9 @@
         docker_users:
           - jenny
           - fritz
-    - role: fw_oss.user_setup
-      vars:
-        users:
+    # - role: fw_oss.user_setup
+    #   vars:
+    #     users:
     #       - name: fritz
     #         comment: Some User
     #         groups: users, admin
@@ -60,12 +60,12 @@
     #         ssh_keys:
     #           - ssh-rsa 12345678905
     #           - ssh-rsa 09876543211
-          - name: madeleine
-            comment: Some User
-            groups: users, admin
-            sudo: true
-            shell: "/bin/bash"
-            ssh_keys:
-              - ssh-rsa 1234567890
-        docker_users:
-          - madeleine
+    #       - name: madeleine
+    #         comment: Some User
+    #         groups: users, admin
+    #         sudo: true
+    #         shell: "/bin/bash"
+    #         ssh_keys:
+    #           - ssh-rsa 1234567890
+    #     docker_users:
+    #       - madeleine
