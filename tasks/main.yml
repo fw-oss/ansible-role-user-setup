@@ -35,7 +35,8 @@
     label: "{{ item.name }}"
 
 - name: Determine existing users
-  ansible.builtin.shell: "awk -F: '($3>=1000)&&($3<60000)&&($1!='nobody'){print $1}' /etc/passwd"
+  ansible.builtin.shell: >-
+    awk -F: '($3>=1000)&&($3<60000)&&($1!='nobody'){print $1}' /etc/passwd
   changed_when: false
   register: existing_users
 

@@ -14,7 +14,8 @@
       | default('') }}"  # empty string if no group set and not in docker_users
     state: present
     shell: "{{ item.shell | default('/bin/bash') }}"
-    # password: "{{ item.password | password_hash('sha512', item.password_salt) }}"
+    # password: "{{
+    #   item.password | password_hash('sha512', item.password_salt) }}"
 
 - name: Add user to sudo
   ansible.builtin.lineinfile:

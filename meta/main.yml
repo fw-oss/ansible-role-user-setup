@@ -4,7 +4,9 @@ galaxy_info:
   namespace: fw_oss
   company: FW OSS
   author: FW OSS
-  description: Creates Users on remote host and installs their ssh pub keys. Removes all undefined users exept the ansible-user
+  description: > 
+    Creates Users on remote host and installs their ssh pub keys.
+    Removes all undefined users
   issue_tracker_url: ""
   license: MIT
   min_ansible_version: "2.9"
