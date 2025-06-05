@@ -4,7 +4,7 @@ galaxy_info:
   namespace: fw_oss
   company: FW OSS
   author: FW OSS
-  description: > 
+  description: >
     Creates Users on remote host and installs their ssh pub keys.
     Removes all undefined users
   issue_tracker_url: ""
