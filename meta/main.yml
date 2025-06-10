@@ -7,7 +7,8 @@ galaxy_info:
   description: >
     Creates Users on remote host and installs their ssh pub keys.
     Removes all undefined users
-  issue_tracker_url: ""
+  issue_tracker_url: >-
+    https://github.com/fw-oss/ansible-role-user-setup/issues
   license: MIT
   min_ansible_version: "2.9"
   platforms:

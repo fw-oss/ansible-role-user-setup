@@ -27,13 +27,6 @@
     validate: "visudo -cf %s"
   diff: true
 
-# - name: Passwordless sudo  # redundant??
-#   ansible.builtin.lineinfile:
-#     path: /etc/sudoers
-#     state: present
-#     line: "{{ item.name }} ALL=(ALL:ALL) NOPASSWD: ALL"
-#     validate: "visudo -cf %s"
-
 - name: Set up authorized keys for "{{ item.name }}"
   ansible.posix.authorized_key:
     user: "{{ item.name }}"

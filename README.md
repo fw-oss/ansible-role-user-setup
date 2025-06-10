@@ -20,6 +20,8 @@ users:
       - ssh-rsa [...]
 ```
 
+Any users with an UID between 1000-60000 that are not listed will be deleted.
+
 ## Dependencies
 
 Only default modules are used. No dependencies.
@@ -52,4 +54,3 @@ Only default modules are used. No dependencies.
 MIT
 
 ## Author Information
-
