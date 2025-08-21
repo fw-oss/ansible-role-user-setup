@@ -1,0 +1,35 @@
+---
+- name: Determine available groups
+  ansible.builtin.getent:
+    database: group
+
+- name: Create user {{ item.name }}
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    comment: "{{ item.comment | default('') }}"
+    groups: "{{ (( item.groups | default([]) + ['docker'] | unique )
+      if 'docker' in ansible_facts.getent_group
+      and docker_users is defined
+      and item.name in docker_users | list )
+      | default('') }}"  # empty string if no group set and not in docker_users
+    state: present
+    shell: "{{ item.shell | default('/bin/bash') }}"
+    # password: "{{
+    #   item.password | password_hash('sha512', item.password_salt) }}"
+
+- name: Add user to sudo
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers.d/{{ item.name }}
+    line: "{{ item.name }} ALL=(ALL:ALL) NOPASSWD: ALL"
+    state: "{{ 'present' if item.sudo | bool else 'absent' }}"
+    mode: "0440"
+    create: true
+    validate: "visudo -cf %s"
+  diff: true
+
+- name: Set up authorized keys for "{{ item.name }}"
+  ansible.posix.authorized_key:
+    user: "{{ item.name }}"
+    key: "{{ item.ssh_keys | join('\n') }}"
+    exclusive: true
+  diff: true

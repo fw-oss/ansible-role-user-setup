@@ -1,0 +1,60 @@
+---
+# tasks file for deploy_users
+- name: Set includedir in sudoers
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers
+    regexp: "^.?includedir (.*)$"
+    line: "#includedir /etc/sudoers.d"
+    state: present
+    backrefs: true
+    validate: "visudo -cf %s"
+  diff: true
+
+- name: Passwordless sudo
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: "^%sudo"
+    line: "%sudo ALL=(ALL:ALL) NOPASSWD: ALL"
+    validate: "visudo -cf %s"
+  diff: true
+
+- name: Create necessary groups
+  ansible.builtin.group:
+    name: "{{ item }}"
+    state: "present"
+  with_items:
+    - "{{ user_groups }}"
+    - "{{ additional_user_groups }}"
+  diff: true
+
+- name: Deploy users
+  ansible.builtin.include_tasks: create-user.yml
+  with_items: "{{ (users + additional_users) | unique }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Determine existing users
+  ansible.builtin.shell: >-
+    awk -F: '($3>=1000)&&($3<60000)&&($1!='nobody'){print $1}' /etc/passwd
+  changed_when: false
+  register: existing_users
+
+- name: Create sublist of usernames from vars
+  ansible.builtin.set_fact:
+    new_users: []
+
+- name: Create sublist of usernames from vars, add usernames
+  ansible.builtin.set_fact:
+    new_users: "{{ new_users + [item.name] }}"
+  with_items: "{{ (users + additional_users) | unique }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Determine users to be removed
+  ansible.builtin.set_fact:
+    users_to_remove: "{{ existing_users.stdout_lines | difference(new_users) }}"
+
+- name: Remove users
+  ansible.builtin.include_tasks: remove-user.yml
+  with_items: "{{ users_to_remove }}"
