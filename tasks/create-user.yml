@@ -35,6 +35,6 @@
 - name: Set up authorized keys for "{{ item.name }}"
   ansible.posix.authorized_key:
     user: "{{ item.name }}"
-    key: "{{ item.ssh_keys | join('\n') }}"
+    key: "{{ (item.ssh_keys | join('\n')) if 'ssh_keys' in item else '' }}"
     exclusive: true
   diff: true
