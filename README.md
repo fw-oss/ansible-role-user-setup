@@ -22,6 +22,9 @@ users:
 
 Any users with an UID between 1000-60000 that are not listed will be deleted.
 
+Additionally you can allow passwordless sudo with `user_setup_passwordless_sudo: true`  
+Or enable insults on a misstyped sudo password with `user_setup_sudo_insults: true` 
+
 ## Dependencies
 
 Only default modules are used. No dependencies.
@@ -44,6 +47,7 @@ Only default modules are used. No dependencies.
       - jenny
       - fritz
       - madeleine
+    user_setup_passwordless_sudo: true
   become: true
   roles:
     - role: user_setup
