@@ -4,7 +4,7 @@
   ansible.builtin.lineinfile:
     path: /etc/sudoers
     regexp: "^.?includedir (.*)$"
-    line: "@includedir /etc/sudoers.d"
+    line: "#includedir /etc/sudoers.d"  # not a comment!
     state: present
     backrefs: true
     validate: "visudo -cf %s"
