@@ -23,7 +23,10 @@
   ansible.builtin.lineinfile:
     path: /etc/sudoers.d/{{ item.name }}
     line: "{{ item.name }} ALL=(ALL:ALL) NOPASSWD: ALL"
-    state: "{{ 'present' if (item.sudo is defined and item.sudo | bool) else 'absent' }}"
+    state: "{{
+      'present' if ('sudo' in item and item.sudo | bool)
+      else 'absent'
+      }}"
     mode: "0440"
     create: true
     validate: "visudo -cf %s"
