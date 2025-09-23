@@ -46,6 +46,8 @@
             shell: "/bin/bash"
             ssh_keys:
               - ssh-rsa 1234567890
+          - name: jeffrey
+            comment: useless User
         docker_users:
           - jenny
           - fritz

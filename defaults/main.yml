@@ -1,4 +1,6 @@
 ---
+user_setup_passwordless_sudo: false
+user_setup_sudo_insults: false
 user_groups: []
 additional_user_groups: []
 users: {}

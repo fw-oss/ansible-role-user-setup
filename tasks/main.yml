@@ -4,7 +4,7 @@
   ansible.builtin.lineinfile:
     path: /etc/sudoers
     regexp: "^.?includedir (.*)$"
-    line: "#includedir /etc/sudoers.d"
+    line: "#includedir /etc/sudoers.d"  # not a comment!
     state: present
     backrefs: true
     validate: "visudo -cf %s"
@@ -17,7 +17,15 @@
     regexp: "^%sudo"
     line: "%sudo ALL=(ALL:ALL) NOPASSWD: ALL"
     validate: "visudo -cf %s"
+  when: user_setup_passwordless_sudo | bool
   diff: true
+
+- name: Insults when you type the wrong sudo password
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers
+    regexp: "^Defaults insults"
+    line: "Defaults insults"
+  when: user_setup_sudo_insults | bool
 
 - name: Create necessary groups
   ansible.builtin.group:
